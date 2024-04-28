@@ -2,7 +2,7 @@ CC:=c++
 CPPFLAGS:=-std=c++20
 SDL2_INCLUDE:=-I/opt/homebrew/include
 SDL2_LIBRARY:=-L/opt/homebrew/lib
-LDFLAGS:=-lSDL2 -lSDL2_image -lSDL2_ttf
+LDFLAGS:=-lSDL2 -lSDL2_image -lSDL2_ttf -framework CoreGraphics
 DESTINATION:=bin/
 SOURCES:=$(wildcard *.cpp components/*.cpp)
 EXECUTABLE:=$(DESTINATION)conway

@@ -2,10 +2,21 @@
 #define SDL_WINDOW_1234
 #include <SDL2/SDL.h>
 #include <vector>
+#include <cmath>
+#include <iostream>
+
+#if __APPLE__
+    #include <CoreGraphics/CoreGraphics.h>
+    extern CGDirectDisplayID mainDisplayId;
+#endif
+
+extern size_t screenHeight;
+extern size_t screenWidth;
 
 class Window {
 public:
-    Window(int cell_w, int cell_h, int cell_s);
+    Window(int cell_w, int cell_h, const char* title);
+    ~Window();
     int update(const std::vector<std::pair<int,int>>& active_cells);
     int destroy();
 private:
@@ -17,7 +28,7 @@ private:
     SDL_Color       line          =  {44, 44, 44, 255};      // Dark grey
     SDL_Color       active        =  {255, 255, 255, 255};   // White
 
-    int init_win(int width, int height);
+    int init_win(int width, int height, const char* title);
 };
 
 #endif
