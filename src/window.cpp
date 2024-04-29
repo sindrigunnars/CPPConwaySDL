@@ -3,7 +3,7 @@
 #if __APPLE__
     CGDirectDisplayID mainDisplayId = CGMainDisplayID();
     size_t screenWidth = CGDisplayPixelsWide(mainDisplayId);
-    size_t screenHeight = CGDisplayPixelsHigh(mainDisplayId) - 100;
+    size_t screenHeight = CGDisplayPixelsHigh(mainDisplayId) - 120;
 #else
     size_t screenWidth = 1200;
     size_t screenHeight = 800;
@@ -114,8 +114,8 @@ void Window::set_mouse_state(bool toggle) {
 }
 
 void Window::handleMouse(int32_t x, int32_t y) {
-    ghost.x = (x / cell_size) * cell_size;
-    ghost.y = (y / cell_size) * cell_size;
+    ghost.x = ((x - 1) / cell_size) * cell_size;
+    ghost.y = ((y - 3) / cell_size) * cell_size;
 }
 
 int Window::destroy() {
