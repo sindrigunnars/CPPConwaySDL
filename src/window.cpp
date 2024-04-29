@@ -19,6 +19,13 @@ Window::Window(int cell_w, int cell_h, const char* title) : cell_width(cell_w), 
     
     if (init_win(window_width, window_height, title) != 0) std::cerr << "Failed to initialize" << std::endl;
 
+    ghost = SDL_Rect({
+        .x = (cell_w - 1) / 2 * cell_size,
+        .y = (cell_h - 1) / 2 * cell_size,
+        .w = cell_size,
+        .h = cell_size,
+    });
+
     for (int i = 0; i < cell_height; i++) {
         std::vector<SDL_Rect> row;
         for (int j = 0; j < cell_width; j++) {
@@ -51,7 +58,7 @@ int Window::init_win(int width, int height, const char* title) {
         return EXIT_FAILURE;
     }
 
-    Uint32 flags = SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
+    uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
 
     if (SDL_CreateWindowAndRenderer(width, height, flags, &window, &renderer) < 0) {
         SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Create window and renderer: %s", SDL_GetError());
@@ -80,7 +87,11 @@ int Window::update(const std::vector<std::pair<int,int>>& active_cells) {
         SDL_RenderDrawLine(renderer, 0, y, window_width, y);
     }
 
-    // Draw grid cursor.
+    if (mouse_hover) {
+        SDL_SetRenderDrawColor(renderer, ghost_color.r, ghost_color.g, ghost_color.b, ghost_color.a);
+        SDL_RenderFillRect(renderer, &ghost);
+    }
+
     SDL_SetRenderDrawColor(renderer, active.r, active.g, active.b, active.a);
     
     for (const std::pair<int,int>& active_cell : active_cells) {
@@ -92,6 +103,19 @@ int Window::update(const std::vector<std::pair<int,int>>& active_cells) {
     SDL_RenderPresent(renderer);
 
     return 0;
+}
+
+bool Window::get_mouse_state() {
+    return mouse_hover;
+}
+
+void Window::set_mouse_state(bool toggle) {
+    mouse_hover = toggle;
+}
+
+void Window::handleMouse(int32_t x, int32_t y) {
+    ghost.x = (x / cell_size) * cell_size;
+    ghost.y = (y / cell_size) * cell_size;
 }
 
 int Window::destroy() {

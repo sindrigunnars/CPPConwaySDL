@@ -10,12 +10,14 @@ public:
     ConwayGame(int w, int h);
     ~ConwayGame();
     int run();
-    void update_game();
 private:
-    int w, h, delay = 500;
+    int w, h, delay = 500, paused = 0, running = 1;
     std::vector<std::pair<int,int>> alive;
-    int** board;
+    uint8_t** board;
     Window* win;
+
+    void handle_events();
+    void update_game();
 };
 
 
