@@ -80,8 +80,13 @@ void ConwayGame::handle_events() {
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 coords = win->setAlive(event.motion.x, event.motion.y);
-                board[coords.second][coords.first] = 1;
-                alive.push_back(coords);
+                if (board[coords.second][coords.first] == 1) {
+                    board[coords.second][coords.first] = 0;
+                    alive.erase(std::remove(alive.begin(), alive.end(), coords), alive.end());
+                } else {
+                    board[coords.second][coords.first] = 1;
+                    alive.push_back(coords);
+                }
                 break;
             case SDL_MOUSEMOTION:
                 win->handleMouse(event.motion.x, event.motion.y);
