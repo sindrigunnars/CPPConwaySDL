@@ -117,6 +117,14 @@ void Window::handleMouse(int32_t x, int32_t y) {
     ghost.y = ((y - 3) / cell_size) * cell_size;
 }
 
+const std::pair<int,int> Window::setAlive(int32_t x, int32_t y) const {
+    std::pair<int,int> coords = {
+        ((x - 1) / cell_size),
+        ((y - 3) / cell_size)
+    };
+    return coords;
+}
+
 int Window::destroy() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);

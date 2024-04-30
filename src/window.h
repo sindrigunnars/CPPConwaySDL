@@ -20,6 +20,7 @@ public:
     int update(const std::vector<std::pair<int,int>>& active_cells);
     int destroy();
     void handleMouse(int32_t x, int32_t y);
+    const std::pair<int,int> setAlive(int32_t x, int32_t y) const;
     bool get_mouse_state();
     void set_mouse_state(bool toggle);
 private:

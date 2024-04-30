@@ -20,11 +20,49 @@ ConwayGame::~ConwayGame() {
 
 void ConwayGame::update_game() {
     alive.clear();
-    alive.push_back(std::pair<int,int>(rand() % w,rand() % h));
+    uint8_t** new_board = new uint8_t*[h];
+    for (int i = 0; i < h; ++i) {
+        new_board[i] = new uint8_t[w];
+        memset(new_board[i], 0, w * sizeof(uint8_t));
+    }
+
+    for (int i = 0; i < h; i++) {
+        for (int j = 0; j < w; j++) {
+            int neighbours = num_neighbours(std::make_pair(i, j));
+            if (board[i][j] == 1 && (neighbours == 2 || neighbours == 3)) {
+                alive.push_back(std::make_pair(j, i));
+                new_board[i][j] = 1;
+            }
+            if (board[i][j] == 0 && neighbours == 3) {
+                alive.push_back(std::make_pair(j, i));
+                new_board[i][j] = 1;
+            }
+        }
+    }
+
+    for (int i = 0; i < h; ++i) {
+        delete[] board[i];
+    }
+    delete[] board;
+    board = new_board;
+}
+
+int ConwayGame::num_neighbours(const std::pair<int,int>& coord) {
+    int counter = 0;
+    if (coord.first > 0      && coord.second > 0     && board[coord.first - 1][coord.second - 1] == 1) counter++;
+    if (coord.first > 0      && coord.second < w - 1 && board[coord.first - 1][coord.second + 1] == 1) counter++;
+    if (coord.first < h - 1  && coord.second > 0     && board[coord.first + 1][coord.second - 1] == 1) counter++;
+    if (coord.first < h - 1  && coord.second < w - 1 && board[coord.first + 1][coord.second + 1] == 1) counter++;
+    if (coord.first > 0      && board[coord.first - 1][coord.second] == 1) counter++;
+    if (coord.first < h - 1  && board[coord.first + 1][coord.second] == 1) counter++;
+    if (coord.second > 0     && board[coord.first][coord.second - 1] == 1) counter++;
+    if (coord.second < w - 1 && board[coord.first][coord.second + 1] == 1) counter++;
+    return counter;
 }
 
 void ConwayGame::handle_events() {
     SDL_Event event;
+    std::pair<int,int> coords;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
@@ -41,9 +79,13 @@ void ConwayGame::handle_events() {
                 }
                 break;
             case SDL_MOUSEBUTTONDOWN:
+                coords = win->setAlive(event.motion.x, event.motion.y);
+                board[coords.second][coords.first] = 1;
+                alive.push_back(coords);
                 break;
             case SDL_MOUSEMOTION:
                 win->handleMouse(event.motion.x, event.motion.y);
+                break;
             case SDL_WINDOWEVENT:
                 if (event.window.event == SDL_WINDOWEVENT_ENTER && !win->get_mouse_state())
                     win->set_mouse_state(true);
