@@ -42,14 +42,13 @@ Window::Window(int cell_w, int cell_h, const char* title) : cell_width(cell_w), 
 }
 
 Window::~Window() {
-    // Clean up SDL resources
     if (renderer) {
         SDL_DestroyRenderer(renderer);
     }
     if (window) {
         SDL_DestroyWindow(window);
     }
-    SDL_Quit(); // Shut down SDL subsystems
+    SDL_Quit();
 }
 
 int Window::init_win(int width, int height, const char* title) {
