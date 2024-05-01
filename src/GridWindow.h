@@ -1,5 +1,5 @@
-#ifndef SDL_WINDOW_1234
-#define SDL_WINDOW_1234
+#ifndef SDL_GRID_WINDOW_1234
+#define SDL_GRID_WINDOW_1234
 #include <SDL2/SDL.h>
 #include <vector>
 #include <cmath>
@@ -13,10 +13,10 @@
 extern size_t screenHeight;
 extern size_t screenWidth;
 
-class Window {
+class GridWindow {
 public:
-    Window(int cell_w, int cell_h, const char* title);
-    ~Window();
+    GridWindow(int cell_w, int cell_h, const char* title);
+    ~GridWindow();
     int update(const std::vector<std::pair<int,int>>& active_cells);
     int destroy();
     void handleMouse(int32_t x, int32_t y);

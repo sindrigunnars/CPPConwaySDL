@@ -1,4 +1,4 @@
-#include "conway.h"
+#include "ConwayGame.h"
 
 
 ConwayGame::ConwayGame(int w, int h) : w(w), h(h) {
@@ -7,7 +7,7 @@ ConwayGame::ConwayGame(int w, int h) : w(w), h(h) {
         board[i] = new uint8_t[w];
         memset(board[i], 0, w * sizeof(uint8_t));
     }
-    win = new Window(w, h, "Conway's Game of Life");
+    win = new GridWindow(w, h, "Conway's Game of Life");
 }
 
 ConwayGame::~ConwayGame() {

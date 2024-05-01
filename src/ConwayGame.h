@@ -2,7 +2,7 @@
 #define CONWAY_GAME_LIFE
 #include <vector>
 #include <iostream>
-#include "window.h"
+#include "GridWindow.h"
 #include <SDL2/SDL.h>
 
 class ConwayGame {
@@ -14,7 +14,7 @@ private:
     int w, h, delay = 200, paused = 0, running = 1;
     std::vector<std::pair<int,int>> alive;
     uint8_t** board;
-    Window* win;
+    GridWindow* win;
 
     void handle_events();
     void update_game();
