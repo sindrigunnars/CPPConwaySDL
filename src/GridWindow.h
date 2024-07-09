@@ -17,7 +17,7 @@ class GridWindow {
 public:
     GridWindow(int cell_w, int cell_h, const char* title);
     ~GridWindow();
-    int update(const std::vector<std::pair<int,int>>& active_cells);
+    int update(const std::vector<std::pair<int,int> >& active_cells);
     int destroy();
     void handleMouse(int32_t x, int32_t y);
     const std::pair<int,int> setAlive(int32_t x, int32_t y) const;
@@ -26,7 +26,7 @@ public:
 private:
     int cell_width, cell_height, cell_size, window_width, window_height;
     bool mouse_hover = true;
-    std::vector<std::vector<SDL_Rect>> cells;
+    std::vector<std::vector<SDL_Rect> > cells;
     SDL_Rect        ghost;
     SDL_Window*     window;
     SDL_Renderer*   renderer;
